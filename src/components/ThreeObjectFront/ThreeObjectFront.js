@@ -65,12 +65,12 @@ function Floor( props ) {
 }
 
 export default function ThreeObjectFront( props ) {
+	console.log(props);
 	if ( props.deviceTarget === 'vr' ) {
 		return (
 			<>
 				<VRCanvas
           camera={ { fov: 80, zoom: props.zoom, position: [ 0, 0, 20 ] } }
-					shadowMap
 					style={ {
 						backgroundColor: props.backgroundColor,
 						margin: '0 Auto',
@@ -122,7 +122,6 @@ export default function ThreeObjectFront( props ) {
 			<>
 				<ARCanvas
           camera={ { fov: 80, zoom: props.zoom, position: [ 0, 0, 20 ] } }
-					shadowMap
 					style={ {
 						backgroundColor: props.backgroundColor,
 						margin: '0 Auto',
@@ -169,7 +168,6 @@ export default function ThreeObjectFront( props ) {
 			<>
 				<Canvas
           camera={ { fov: 80 } }
-					shadowMap
 					style={ {
 						backgroundColor: props.backgroundColor,
 						margin: '0 Auto',
@@ -217,7 +215,6 @@ export default function ThreeObjectFront( props ) {
 			<>
 				<Canvas
 					camera={ { fov: 80, zoom: props.zoom, position: [ 0, 0, 20 ] } }
-					shadowMap
 					style={ {
 						backgroundColor: props.backgroundColor,
 						margin: '0 Auto',

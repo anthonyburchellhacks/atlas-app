@@ -1,5 +1,5 @@
 import { getNextStaticProps, is404 } from '@faustjs/next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { client } from 'client';
 import {
@@ -28,54 +28,78 @@ export function PageComponent({ page }) {
   const [ rotationY, setRotationY ] = useState();
   const [ animations, setAnimations ] = useState();
   
-  if ( threeApp ) {
-    setThreeUrl(threeApp.querySelector( 'p.three-object-block-url' )
-      ? threeApp.querySelector( 'p.three-object-block-url' ).innerText
-      : '');
+  useEffect(() => {
+      setThreeUrl(
+        threeApp.querySelector('p.three-object-block-url')
+          ? threeApp.querySelector('p.three-object-block-url').innerText
+          : ''
+      );
 
-    setDeviceTarget(threeApp.querySelector(
-      'p.three-object-block-device-target'
-    )
-      ? threeApp.querySelector( 'p.three-object-block-device-target' )
-          .innerText
-      : '2D');
+      setDeviceTarget(
+        threeApp.querySelector('p.three-object-block-device-target')
+          ? threeApp.querySelector('p.three-object-block-device-target')
+              .innerText
+          : '2D'
+      );
 
-    setBackgroundColor(threeApp.querySelector(
-      'p.three-object-background-color'
-    )
-      ? threeApp.querySelector( 'p.three-object-background-color' ).innerText
-      : '#ffffff');
+      setBackgroundColor(
+        threeApp.querySelector('p.three-object-background-color')
+          ? threeApp.querySelector('p.three-object-background-color').innerText
+          : '#ffffff'
+      );
 
-    setZoom(threeApp.querySelector( 'p.three-object-zoom' )
-      ? threeApp.querySelector( 'p.three-object-zoom' ).innerText
-      : 90);
+      setZoom(
+        threeApp.querySelector('p.three-object-zoom')
+          ? threeApp.querySelector('p.three-object-zoom').innerText
+          : 90
+      );
 
-    setScale(threeApp.querySelector( 'p.three-object-scale' )
-      ? threeApp.querySelector( 'p.three-object-scale' ).innerText
-      : 1);
+      setScale(
+        threeApp.querySelector('p.three-object-scale')
+          ? threeApp.querySelector('p.three-object-scale').innerText
+          : 1
+      );
 
-    setHasZoom(threeApp.querySelector( 'p.three-object-has-zoom' )
-      ? threeApp.querySelector( 'p.three-object-has-zoom' ).innerText
-      : false);
+      setHasZoom(
+        threeApp.querySelector('p.three-object-has-zoom')
+          ? threeApp.querySelector('p.three-object-has-zoom').innerText
+          : false
+      );
 
-    setHasTip(threeApp.querySelector( 'p.three-object-has-tip' )
-      ? threeApp.querySelector( 'p.three-object-has-tip' ).innerText
-      : true);
+      setHasTip(
+        threeApp.querySelector('p.three-object-has-tip')
+          ? threeApp.querySelector('p.three-object-has-tip').innerText
+          : true
+      );
 
-    setPositionY(threeApp.querySelector( 'p.three-object-position-y' )
-      ? threeApp.querySelector( 'p.three-object-position-y' ).innerText
-      : 0);
+      setPositionY(
+        threeApp.querySelector('p.three-object-position-y')
+          ? threeApp.querySelector('p.three-object-position-y').innerText
+          : 0
+      );
 
-    setRotationY(threeApp.querySelector( 'p.three-object-rotation-y' )
-      ? threeApp.querySelector( 'p.three-object-rotation-y' ).innerText
-      : 0);
+      setRotationY(
+        threeApp.querySelector('p.three-object-rotation-y')
+          ? threeApp.querySelector('p.three-object-rotation-y').innerText
+          : 0
+      );
 
-    setAnimations(threeApp.querySelector( 'p.three-object-animations' )
-      ? threeApp.querySelector( 'p.three-object-animations' ).innerText
-      : '');
-      console.log(deviceTarget, threeUrl, zoom, scale, hasZoom, positionY, rotationY);
-  }
-  
+      setAnimations(
+        threeApp.querySelector('p.three-object-animations')
+          ? threeApp.querySelector('p.three-object-animations').innerText
+          : ''
+      );
+      console.log(
+        deviceTarget,
+        threeUrl,
+        zoom,
+        scale,
+        hasZoom,
+        positionY,
+        rotationY
+      );
+  }, [threeApp]);
+
   return (
     <>
       <SEO
@@ -91,7 +115,7 @@ export function PageComponent({ page }) {
       <Main>
         <EntryHeader title={page?.title()} image={page?.featuredImage?.node} />
         <div className="container">
-          {threeApp &&
+          {threeUrl &&
                   <ThreeObjectFront
                     threeUrl={ threeUrl }
                     deviceTarget={ deviceTarget }
