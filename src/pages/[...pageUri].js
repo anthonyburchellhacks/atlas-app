@@ -31,6 +31,7 @@ export function PageComponent({ page }) {
       <Main>
         <EntryHeader title={page?.title()} image={page?.featuredImage?.node} />
         <div className="container">
+          <p>test</p>
           <ContentWrapper content={page?.content()} />
         </div>
       </Main>
