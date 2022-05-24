@@ -1,4 +1,5 @@
 import { getNextStaticProps, is404 } from '@faustjs/next';
+import dynamic from 'next/dynamic';
 import { client } from 'client';
 import {
   Header,
