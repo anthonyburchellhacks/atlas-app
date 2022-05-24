@@ -217,9 +217,9 @@ export default function ThreeObjectFront( props ) {
 					camera={ { fov: 80, zoom: props.zoom, position: [ 0, 0, 20 ] } }
 					style={ {
 						backgroundColor: props.backgroundColor,
-						margin: '0 Auto',
-						height: '500px',
-						width: '90%',
+						margin: '0 0',
+						height: '100vh',
+						width: '100vw',
 					} }
 				>
 					<ambientLight intensity={ 0.5 } />
