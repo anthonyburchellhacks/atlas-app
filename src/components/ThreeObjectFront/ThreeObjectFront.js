@@ -14,8 +14,7 @@ import {
 	DefaultXRControllers,
 	Hands,
 } from '@react-three/xr';
-import TeleportTravel from './TeleportTravel';
-import Controls from './Controls';
+import { Controls, TeleportTravel } from 'components';
 
 function SavedObject( props ) {
 	const [ url, set ] = useState( props.url );

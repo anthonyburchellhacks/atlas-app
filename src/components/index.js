@@ -1,6 +1,7 @@
 import Button from './Button';
 import ContentWrapper from './ContentWrapper';
 import CTA from './CTA';
+import Controls from './Controls';
 import EntryHeader from './EntryHeader';
 import FeaturedImage from './FeaturedImage';
 import Footer from './Footer';
@@ -19,11 +20,14 @@ import SearchResults from './SearchResults';
 import SEO from './SEO';
 import SkipNavigationLink from './SkipNavigationLink';
 import TaxonomyTerms from './TaxonomyTerms';
+import ThreeObjectFront from './ThreeObjectFront';
+import TeleportTravel from './TeleportTravel';
 
 export {
   Button,
   ContentWrapper,
   CTA,
+  Controls,
   EntryHeader,
   FeaturedImage,
   Footer,
@@ -42,4 +46,6 @@ export {
   SEO,
   SkipNavigationLink,
   TaxonomyTerms,
+  ThreeObjectFront,
+  TeleportTravel,
 };

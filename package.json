@@ -16,7 +16,7 @@
   "dependencies": {
     "@faustjs/core": "^0.15.2",
     "@faustjs/next": "^0.15.3",
-    "@react-three/drei": "^9.11.2",
+    "@react-three/drei": "^8.18.10",
     "@react-three/fiber": "^8.0.19",
     "@react-three/xr": "^3.5.0",
     "gqty": "^2.2.0",
