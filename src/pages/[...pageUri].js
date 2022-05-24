@@ -111,9 +111,9 @@ export function PageComponent({ page }) {
         imageUrl={page?.featuredImage?.node?.sourceUrl?.()}
       />
 
-      <Header />
+      {/* <Header /> */}
       <Main>
-        <EntryHeader title={page?.title()} image={page?.featuredImage?.node} />
+        {/* <EntryHeader title={page?.title()} image={page?.featuredImage?.node} /> */}
         <div className="container">
           {threeUrl &&
                   <ThreeObjectFront
@@ -133,7 +133,7 @@ export function PageComponent({ page }) {
         </div>
       </Main>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
