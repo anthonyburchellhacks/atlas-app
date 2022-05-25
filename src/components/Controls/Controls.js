@@ -11,7 +11,7 @@ const Controls = () => {
 	const [ moveRight, setMoveRight ] = useState( false );
 
 	useFrame( () => {
-		const velocity = 0.1;
+		const velocity = 0.5;
 		if ( moveForward ) {
 			controlsRef.current.moveForward( velocity );
 		} else if ( moveLeft ) {
