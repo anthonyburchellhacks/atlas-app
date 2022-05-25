@@ -52,7 +52,7 @@ function SavedObject( props ) {
 				setProductPositions(products);
 			}
 		});
-		console.log(productPositions);
+		// console.log(productPositions);
 
 		if ( animationList ) {
 			animationList.forEach( ( name ) => {
@@ -66,8 +66,8 @@ function SavedObject( props ) {
 		productPositions.forEach( ( child ) => {
 			var addScene = gltf.scene.clone(true);
 			console.log(addScene);
-			addScene.position.set(child.position.x, child.position.y, child.position.z );
-			addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
+			addScene.position.set(child.position.x, child.position.y - 2, child.position.z );
+			addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - 9, child.rotation.z );
 			// addScene.rotation.set(0, 180, 0 );
 			addScene.scale.set(5,5,5)
 			scene.add(addScene);
@@ -104,6 +104,7 @@ function Floor( props ) {
 }
 
 export default function ThreeObjectFront( props ) {
+	
 	if ( props.deviceTarget === 'vr' ) {
 		return (
 			<>
