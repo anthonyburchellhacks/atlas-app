@@ -16,6 +16,11 @@ import { pageTitle } from 'utils';
 export function PageComponent({ page }) {
   const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
+  const items = useQuery().things()?.nodes;
+  const { nodes: things } = useQuery().things();
+
+  console.log(things);
+
   const threeApp = typeof document !== 'undefined' && document.querySelector( '.three-object-three-app' );
   const [ threeUrl, setThreeUrl ] = useState();
   const [ deviceTarget, setDeviceTarget ] = useState();

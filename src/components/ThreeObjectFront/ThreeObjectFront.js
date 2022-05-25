@@ -6,6 +6,8 @@ import {
 	OrthographicCamera,
 	OrbitControls,
 	useAnimations,
+	Box,
+  Text
 } from '@react-three/drei';
 import { GLTFAudioEmitterExtension } from 'three-omi';
 import {
@@ -39,36 +41,55 @@ function SavedObject( props ) {
 	const sceneObjects = scene.children;
 
 	const animationList = props.animations ? props.animations.split( ',' ) : '';
+	const gltf = useLoader(GLTFLoader, 'https://bpatlasapp.wpengine.com/wp-content/uploads/2022/05/mothcryptyd-1-1.vrm');
 
 	useEffect( () => {
 
-		sceneObjects.forEach( ( child, index ) => {
+		sceneObjects.forEach( ( child ) => {
 			if(child.userData.gltfExtensions && child.userData.gltfExtensions.MOZ_hubs_components['media-frame']) {
 				var products = productPositions;
 				products.push(child);
 				setProductPositions(products);
 			}
-
-			// if ( Object.keys( actions ).includes( child ) ) {
-			// 	actions[ name ].play();
-			// }
-		} );
-		console.log(productPositions);
+		});
+		// console.log(productPositions);
 
 		if ( animationList ) {
 			animationList.forEach( ( name ) => {
+				
 				if ( Object.keys( actions ).includes( name ) ) {
 					actions[ name ].play();
 				}
 			} );
 		}
+
+		productPositions.forEach( ( child ) => {
+			var addScene = gltf.scene.clone(true);
+			console.log(addScene);
+			addScene.position.set(child.position.x, child.position.y - 2, child.position.z );
+			addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - 9, child.rotation.z );
+			// addScene.rotation.set(0, 180, 0 );
+			addScene.scale.set(5,5,5)
+			scene.add(addScene);
+		});
 	
 	}, [] );
+
 	scene.position.set( 0, props.positionY, 0 );
 	scene.rotation.set( 0, props.rotationY, 0 );
 	scene.scale.set( props.scale, props.scale, props.scale );
-	return <primitive object={ scene } />;
+	//pick up here. scene.add(thingsssssssss)
+	// productPositions.forEach( ( child ) => {
+	// 	const gltf = useLoader(GLTFLoader, 'https://bpatlasapp.wpengine.com/wp-content/uploads/2022/05/mothcryptyd-1-1.vrm');
+	// });
+
+	return (
+		<>
+			<primitive object={ scene } />
+		</>
+  )
 }
+
 function Floor( props ) {
 	return (
 		<mesh rotation={ [ -Math.PI / 2, 0, 0 ] } { ...props }>
@@ -83,6 +104,7 @@ function Floor( props ) {
 }
 
 export default function ThreeObjectFront( props ) {
+	
 	if ( props.deviceTarget === 'vr' ) {
 		return (
 			<>
