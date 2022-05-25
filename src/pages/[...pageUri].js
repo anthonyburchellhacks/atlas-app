@@ -89,15 +89,6 @@ export function PageComponent({ page }) {
           ? threeApp.querySelector('p.three-object-animations').innerText
           : ''
       );
-      console.log(
-        deviceTarget,
-        threeUrl,
-        zoom,
-        scale,
-        hasZoom,
-        positionY,
-        rotationY
-      );
   }, [threeApp]);
 
   return (
@@ -116,18 +107,18 @@ export function PageComponent({ page }) {
         {/* <EntryHeader title={page?.title()} image={page?.featuredImage?.node} /> */}
         <div className="container">
           {threeUrl &&
-                  <ThreeObjectFront
-                    threeUrl={ threeUrl }
-                    deviceTarget={ deviceTarget }
-                    zoom={ zoom }
-                    scale={ scale }
-                    hasTip={ hasTip }
-                    hasZoom={ hasZoom }
-                    positionY={ positionY }
-                    rotationY={ rotationY }
-                    animations={ animations }
-                    backgroundColor={ backgroundColor }
-                  />        
+            <ThreeObjectFront
+              threeUrl={ threeUrl }
+              deviceTarget={ deviceTarget }
+              zoom={ zoom }
+              scale={ scale }
+              hasTip={ hasTip }
+              hasZoom={ hasZoom }
+              positionY={ positionY }
+              rotationY={ rotationY }
+              animations={ animations }
+              backgroundColor={ backgroundColor }
+            />        
           }
           <ContentWrapper content={page?.content()} />
         </div>

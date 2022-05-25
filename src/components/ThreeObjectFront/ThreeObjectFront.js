@@ -18,6 +18,8 @@ import { Controls, TeleportTravel } from 'components';
 
 function SavedObject( props ) {
 	const [ url, set ] = useState( props.url );
+	const [ productPositions, setProductPositions ] = useState([]);
+
 	useEffect( () => {
 		setTimeout( () => set( props.url ), 2000 );
 	}, [] );
@@ -34,9 +36,25 @@ function SavedObject( props ) {
 	} );
 
 	const { actions } = useAnimations( animations, scene );
+	const sceneObjects = scene.children;
 
 	const animationList = props.animations ? props.animations.split( ',' ) : '';
+
 	useEffect( () => {
+
+		sceneObjects.forEach( ( child, index ) => {
+			if(child.userData.gltfExtensions && child.userData.gltfExtensions.MOZ_hubs_components['media-frame']) {
+				var products = productPositions;
+				products.push(child);
+				setProductPositions(products);
+			}
+
+			// if ( Object.keys( actions ).includes( child ) ) {
+			// 	actions[ name ].play();
+			// }
+		} );
+		console.log(productPositions);
+
 		if ( animationList ) {
 			animationList.forEach( ( name ) => {
 				if ( Object.keys( actions ).includes( name ) ) {
@@ -44,8 +62,8 @@ function SavedObject( props ) {
 				}
 			} );
 		}
+	
 	}, [] );
-
 	scene.position.set( 0, props.positionY, 0 );
 	scene.rotation.set( 0, props.rotationY, 0 );
 	scene.scale.set( props.scale, props.scale, props.scale );
@@ -65,7 +83,6 @@ function Floor( props ) {
 }
 
 export default function ThreeObjectFront( props ) {
-	console.log(props);
 	if ( props.deviceTarget === 'vr' ) {
 		return (
 			<>
@@ -222,6 +239,28 @@ export default function ThreeObjectFront( props ) {
 						width: '100vw',
 					} }
 				>
+					{/* {favorites && favorites["favoriteLinks"].map((itemUrl, index) => { 
+						const positionX = (index * 3) - 8;
+						const splitPosition = favorites["linkPosition"][index].split(',');
+						const splitRotation = favorites["linkRotation"][index].split(',');
+						const splitText = favorites["linkText"];
+						return (<InteractiveButton url={itemUrl} useNormal={true}>
+						<Box rotation={splitRotation} position={[splitPosition[0], splitPosition[1], splitPosition[2] - 0.1]} scale={[2, .8, .1]}>
+							<meshStandardMaterial attach="material" color="#7e00fb" />
+						</Box>
+						<Text
+							scale={[2, 2, 2]}
+							color="white" // default
+							anchorX="center" // default
+							anchorY="middle" // default
+							// position={[positionX, 2, -20]}
+							position={splitPosition}
+							rotation={splitRotation}
+						>
+							{splitText[index]}
+						</Text>
+						</InteractiveButton>)
+					})} */}
 					<ambientLight intensity={ 0.5 } />
 					<directionalLight
 						intensity={ 0.6 }
