@@ -65,6 +65,7 @@ function SavedObject( props ) {
 	const gltf = useLoader(GLTFLoader, 'https://bpatlasapp.wpengine.com/wp-content/uploads/2022/05/mothcryptyd-1-1.vrm');
 
 	useEffect( () => {
+		console.log(finalThings);
 		sceneObjects.forEach( ( child ) => {	
 			if(child.userData.gltfExtensions && child.userData.gltfExtensions.MOZ_hubs_components['media-frame']) {
 				var products = productPositions;
