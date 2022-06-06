@@ -34,11 +34,11 @@ function SavedObject( props ) {
 	const things = useQuery().things()?.nodes;
 	const [ finalThings, setThings ] = useState([]);
 
-  useEffect(() => {
-    if (things[0].glbFile.mediaItemUrl !== undefined) {
-      setThings(things);
-    }
-  }, [things]);
+	useEffect(() => {
+		if (things[0].glbFile.mediaItemUrl !== undefined) {
+			setThings(things);
+		}
+	}, [things]);
 
 	const [ url, set ] = useState( props.url );
 	const [ productPositions, setProductPositions ] = useState([]);
