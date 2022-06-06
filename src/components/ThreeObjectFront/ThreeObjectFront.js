@@ -36,7 +36,6 @@ function SavedObject( props ) {
 
 	useEffect(() => {
 		if (things[0].id !== undefined) {
-			console.log(things[0].glbFile.mediaItemUrl);
 			setThings(things);
 		}
 	}, [things]);
