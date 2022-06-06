@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useLoader, useFrame, useThree } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { client } from 'client';
 import {
 	OrthographicCamera,
 	OrbitControls,
@@ -18,13 +19,37 @@ import {
 } from '@react-three/xr';
 import { Controls, TeleportTravel } from 'components';
 
+function loadAsset( url ) {
+	console.log("loading asset", url);
+	if(url){
+		const gltf = useLoader(GLTFLoader, url);
+		return gltf;
+	} else {
+		return false;
+	}
+}
+
 function SavedObject( props ) {
+	const { useQuery } = client;
+	const things = useQuery().things()?.nodes;
+	const [ finalThings, setThings ] = useState([]);
+
+	useEffect( () => {
+		things.map(thing => {
+			if(thing.glbFile){
+				setThings((current) => ([...current, thing.glbFile.mediaItemUrl]));
+			}
+		});
+		console.log(finalThings);
+	}, [] );
+
 	const [ url, set ] = useState( props.url );
 	const [ productPositions, setProductPositions ] = useState([]);
 
 	useEffect( () => {
 		setTimeout( () => set( props.url ), 2000 );
 	}, [] );
+
 	const [ listener ] = useState( () => new THREE.AudioListener() );
 
 	useThree( ( { camera } ) => {
@@ -39,49 +64,47 @@ function SavedObject( props ) {
 
 	const { actions } = useAnimations( animations, scene );
 	const sceneObjects = scene.children;
-
 	const animationList = props.animations ? props.animations.split( ',' ) : '';
 	const gltf = useLoader(GLTFLoader, 'https://bpatlasapp.wpengine.com/wp-content/uploads/2022/05/mothcryptyd-1-1.vrm');
 
 	useEffect( () => {
-
-		sceneObjects.forEach( ( child ) => {
+		sceneObjects.forEach( ( child ) => {	
 			if(child.userData.gltfExtensions && child.userData.gltfExtensions.MOZ_hubs_components['media-frame']) {
 				var products = productPositions;
 				products.push(child);
 				setProductPositions(products);
 			}
 		});
-		console.log(productPositions);
 
 		if ( animationList ) {
-			animationList.forEach( ( name ) => {
-				
+			animationList.forEach( ( name ) => {			
 				if ( Object.keys( actions ).includes( name ) ) {
 					actions[ name ].play();
 				}
 			} );
 		}
 
-		productPositions.forEach( ( child ) => {
-			var addScene = gltf.scene.clone(true);
-			console.log(addScene);
-			addScene.position.set(child.position.x, child.position.y, child.position.z );
-			addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
-			// addScene.rotation.set(0, 180, 0 );
-			addScene.scale.set(5,5,5)
-			scene.add(addScene);
-		});
+		// productPositions.forEach( ( child, index ) => {
+		// 	if(finalThings[index]){
+		// 		var file = loadAsset(finalThings[index].glbFile.mediaItemUrl);
+		// 		console.log("final things for each loop", finalThings);	
+		// 	}
+
+		// 	if (file){
+		// 		console.log(index);	
+		// 		var addScene = file.scene.clone(true);
+		// 		addScene.position.set(child.position.x, child.position.y, child.position.z );
+		// 		addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
+		// 		addScene.scale.set(5,5,5)
+		// 		scene.add(addScene);
+		// 	}
+		// });
 	
 	}, [] );
 
 	scene.position.set( 0, props.positionY, 0 );
 	scene.rotation.set( 0, props.rotationY, 0 );
 	scene.scale.set( props.scale, props.scale, props.scale );
-	//pick up here. scene.add(thingsssssssss)
-	// productPositions.forEach( ( child ) => {
-	// 	const gltf = useLoader(GLTFLoader, 'https://bpatlasapp.wpengine.com/wp-content/uploads/2022/05/mothcryptyd-1-1.vrm');
-	// });
 
 	return (
 		<>
