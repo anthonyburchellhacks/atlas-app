@@ -34,14 +34,11 @@ function SavedObject( props ) {
 	const things = useQuery().things()?.nodes;
 	const [ finalThings, setThings ] = useState([]);
 
-	useEffect( () => {
-		things.map(thing => {
-			if(thing.glbFile){
-				setThings((current) => ([...current, thing.glbFile.mediaItemUrl]));
-			}
-		});
-		console.log(finalThings);
-	}, [] );
+  useEffect(() => {
+    if (things[0].glbFile.mediaItemUrl !== undefined) {
+      setThings(things);
+    }
+  }, [things]);
 
 	const [ url, set ] = useState( props.url );
 	const [ productPositions, setProductPositions ] = useState([]);
@@ -84,23 +81,22 @@ function SavedObject( props ) {
 			} );
 		}
 
-		// productPositions.forEach( ( child, index ) => {
-		// 	if(finalThings[index]){
-		// 		var file = loadAsset(finalThings[index].glbFile.mediaItemUrl);
-		// 		console.log("final things for each loop", finalThings);	
-		// 	}
+		productPositions.forEach( ( child, index ) => {
+			if(finalThings[index]){
+				var file = loadAsset(finalThings[index].glbFile.mediaItemUrl);
+				console.log("final things for each loop", finalThings);	
+			}
 
-		// 	if (file){
-		// 		console.log(index);	
-		// 		var addScene = file.scene.clone(true);
-		// 		addScene.position.set(child.position.x, child.position.y, child.position.z );
-		// 		addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
-		// 		addScene.scale.set(5,5,5)
-		// 		scene.add(addScene);
-		// 	}
-		// });
+			if (file){
+				var addScene = file.scene.clone(true);
+				addScene.position.set(child.position.x, child.position.y, child.position.z );
+				addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
+				addScene.scale.set(5,5,5)
+				scene.add(addScene);
+			}
+		});
 	
-	}, [] );
+	}, [finalThings] );
 
 	scene.position.set( 0, props.positionY, 0 );
 	scene.rotation.set( 0, props.rotationY, 0 );
