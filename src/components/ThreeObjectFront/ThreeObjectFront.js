@@ -35,7 +35,8 @@ function SavedObject( props ) {
 	const [ finalThings, setThings ] = useState([]);
 
 	useEffect(() => {
-		if (things[0].glbFile.mediaItemUrl !== undefined) {
+		if (things[0].id !== undefined) {
+			console.log(things[0].glbFile.mediaItemUrl);
 			setThings(things);
 		}
 	}, [things]);
@@ -242,20 +243,18 @@ export default function ThreeObjectFront( props ) {
 						shadow-mapSize-height={ 2048 }
 						castShadow
 					/>
-					<Suspense fallback={ null }>
-						{ props.threeUrl && (
-							<SavedObject
-								positionY={ props.positionY }
-								rotationY={ props.rotationY }
-								url={ props.threeUrl }
-								color={ props.backgroundColor }
-								hasZoom={ props.hasZoom }
-								scale={ props.scale }
-								hasTip={ props.hasTip }
-								animations={ props.animations }
-							/>
-						) }
-					</Suspense>
+					{ props.threeUrl && (
+						<SavedObject
+							positionY={ props.positionY }
+							rotationY={ props.rotationY }
+							url={ props.threeUrl }
+							color={ props.backgroundColor }
+							hasZoom={ props.hasZoom }
+							scale={ props.scale }
+							hasTip={ props.hasTip }
+							animations={ props.animations }
+						/>
+					) }
 					<OrbitControls
 						enableZoom={ props.hasZoom === '1' ? true : false }
 					/>
