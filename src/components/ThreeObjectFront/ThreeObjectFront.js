@@ -19,26 +19,27 @@ import {
 } from '@react-three/xr';
 import { Controls, TeleportTravel } from 'components';
 
-function loadAsset( url ) {
+async function loadAsset( url ) {
 	console.log("loading asset", url);
 	if(url){
 		const gltf = useLoader(GLTFLoader, url);
+		console.log("gltf", gltf);
+
 		return gltf;
-	} else {
-		return false;
 	}
 }
 
 function SavedObject( props ) {
-	const { useQuery } = client;
-	const things = useQuery().things()?.nodes;
-	const [ finalThings, setThings ] = useState([]);
+	console.log(props.finalArray);
+	const [ finalThings, setThings ] = useState(props.finalArray);
+	console.log(finalThings[0].name);
 
 	useEffect(() => {
-		if (things[0].id !== undefined) {
-			setThings(things);
+		if (props.finalArray[0].id !== undefined) {
+			console.log('hey');
+			setThings(props.finalArray);
 		}
-	}, [things]);
+	}, []);
 
 	const [ url, set ] = useState( props.url );
 	const [ productPositions, setProductPositions ] = useState([]);
@@ -62,41 +63,57 @@ function SavedObject( props ) {
 	const { actions } = useAnimations( animations, scene );
 	const sceneObjects = scene.children;
 	const animationList = props.animations ? props.animations.split( ',' ) : '';
+	  
 	const gltf = useLoader(GLTFLoader, 'https://bpatlasapp.wpengine.com/wp-content/uploads/2022/05/mothcryptyd-1-1.vrm');
 
 	useEffect( () => {
-		console.log(finalThings);
-		sceneObjects.forEach( ( child ) => {	
-			if(child.userData.gltfExtensions && child.userData.gltfExtensions.MOZ_hubs_components['media-frame']) {
-				var products = productPositions;
-				products.push(child);
-				setProductPositions(products);
-			}
-		});
-
-		if ( animationList ) {
-			animationList.forEach( ( name ) => {			
-				if ( Object.keys( actions ).includes( name ) ) {
-					actions[ name ].play();
+		if(props.finalArray[0].name !== undefined){
+			console.log(props.finalArray[0].name);
+			sceneObjects.forEach( ( child ) => {	
+				if(child.userData.gltfExtensions && child.userData.gltfExtensions.MOZ_hubs_components['media-frame']) {
+					var products = productPositions;
+					products.push(child);
+					setProductPositions(products);
 				}
-			} );
-		}
-
-		productPositions.forEach( ( child, index ) => {
-			if(finalThings[index]){
-				var file = loadAsset(finalThings[index].glbFile.mediaItemUrl);
-				console.log("final things for each loop", finalThings);	
-			}
-
-			if (file){
-				var addScene = file.scene.clone(true);
-				addScene.position.set(child.position.x, child.position.y, child.position.z );
-				addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
-				addScene.scale.set(5,5,5)
-				scene.add(addScene);
-			}
-		});
+			});
 	
+			if ( animationList ) {
+				animationList.forEach( ( name ) => {			
+					if ( Object.keys( actions ).includes( name ) ) {
+						actions[ name ].play();
+					}
+				} );
+			}
+	
+			productPositions.forEach( ( child, index ) => {
+				if(props.finalArray[index]?.glbFile.mediaItemUrl !== undefined){
+					console.log("should be working!", finalThings[index].glbFile.mediaItemUrl);
+					try {
+						var file = useLoader(GLTFLoader, finalThings[index].glbFile.mediaItemUrl);
+						if (file?.scene !== undefined){
+							var addScene = file.scene.clone(true);
+							console.log(addScene);
+							addScene.position.set(child.position.x, child.position.y, child.position.z );
+							addScene.rotation.set(child.rotation.x, gltf.scene.rotation.y - child.rotation.y, child.rotation.z );
+							addScene.scale.set(5,5,5);
+							scene.add(addScene);
+						}
+					} catch {
+						// tslint:disable
+					}
+					
+					// var file = loadAsset(finalThings[index].glbFile.mediaItemUrl);
+
+					// const file = async () => {
+					// 	const something = await loadAsset(props.finalArray[index].glbFile.mediaItemUrl)
+					// 	return something;
+					// }
+				
+					// console.log("final things for each loop", finalThings[index].glbFile.mediaItemUrl);
+				}
+	
+			});	
+		}	
 	}, [finalThings] );
 
 	scene.position.set( 0, props.positionY, 0 );
@@ -124,6 +141,13 @@ function Floor( props ) {
 }
 
 export default function ThreeObjectFront( props ) {
+	const { useQuery } = client;
+	const things = useQuery().things()?.nodes;
+	const [ finalArray, setArrayThings ] = useState([]);
+	useEffect(() => {
+		  setArrayThings(things);
+	  }, [things]);
+ 
 	if ( props.deviceTarget === 'vr' ) {
 		return (
 			<>
@@ -269,6 +293,7 @@ export default function ThreeObjectFront( props ) {
 	if ( props.deviceTarget === 'playerController' ) {
 		return (
 			<>
+			{/* {finalArray.length > 0 && things[0].glbFile.mediaItemUrl && console.log(finalArray[0].glbFile.mediaItemUrl)} */}
 				<Canvas
 					camera={ { fov: 80, zoom: props.zoom, position: [ 0, 0, 20 ] } }
 					style={ {
@@ -310,7 +335,7 @@ export default function ThreeObjectFront( props ) {
 					/>
 					<Suspense fallback={ null }>
 						<Controls />
-						{ props.threeUrl && (
+						{finalArray.length > 0 && finalArray[0].glbFile.mediaItemUrl && 
 							<SavedObject
 								positionY={ props.positionY }
 								rotationY={ props.rotationY }
@@ -320,8 +345,9 @@ export default function ThreeObjectFront( props ) {
 								scale={ props.scale }
 								hasTip={ props.hasTip }
 								animations={ props.animations }
+								finalArray={finalArray}
 							/>
-						) }
+						}
 					</Suspense>
 				</Canvas>
 				{ props.hasTip === '1' ? (
